@@ -12,7 +12,7 @@ public class SecurityConfig {
         //disable csrf(cross-site request forgery)
         http.csrf(csrf -> csrf.disable()).
                 authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/health").permitAll().anyRequest().authenticated());
+                        auth.requestMatchers("/health", "/api/users", "/api/users/{id}").permitAll().anyRequest().authenticated());
         return http.build();
     }
 }
