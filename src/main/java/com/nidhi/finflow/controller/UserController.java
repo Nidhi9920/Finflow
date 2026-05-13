@@ -3,6 +3,7 @@ package com.nidhi.finflow.controller;
 import com.nidhi.finflow.dto.CreateUserRequest;
 import com.nidhi.finflow.entity.User;
 import com.nidhi.finflow.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ import java.util.Optional;
 public class UserController {
     private final UserService userService;
     @PostMapping
-    public User createUser(@RequestBody CreateUserRequest createUserRequest){
+    public User createUser(@Valid @RequestBody CreateUserRequest createUserRequest){
         return userService.createUser(createUserRequest);
     }
     @GetMapping
@@ -23,7 +24,7 @@ public class UserController {
         return userService.getAllUsers();
     }
     @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable Long id){
+    public User getUserById(@PathVariable Long id){
         return userService.getUserById(id);
     }
     @DeleteMapping("/{id}")
@@ -31,7 +32,7 @@ public class UserController {
         return userService.deleteUser(id);
     }
     @PutMapping("/{id}")
-    public User updateUserById(@PathVariable Long id, @RequestBody CreateUserRequest updateUserRequest){
+    public User updateUserById(@PathVariable Long id, @Valid @RequestBody CreateUserRequest updateUserRequest){
         return userService.updateUser(id, updateUserRequest);
     }
 }

@@ -10,9 +10,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         //disable csrf(cross-site request forgery)
-        http.csrf(csrf -> csrf.disable()).
-                authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/health", "/api/users", "/api/users/{id}").permitAll().anyRequest().authenticated());
-        return http.build();
+//        http.csrf(csrf -> csrf.disable()).
+//                authorizeHttpRequests(auth ->
+//                        auth.requestMatchers("/health",
+//                                "/api/users", "api/users/**")
+//                                .permitAll().anyRequest().authenticated());
+//        return http.build();
+        return http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest()
+                        .permitAll()
+                ).build();
     }
 }
