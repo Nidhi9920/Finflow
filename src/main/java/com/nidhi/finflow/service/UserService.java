@@ -1,10 +1,12 @@
 package com.nidhi.finflow.service;
 
 import com.nidhi.finflow.dto.CreateUserRequest;
+import com.nidhi.finflow.dto.LoginRequest;
 import com.nidhi.finflow.entity.User;
 import com.nidhi.finflow.exception.ResourceNotFoundException;
 import com.nidhi.finflow.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,11 +16,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
     public User createUser(CreateUserRequest createUserRequest){
         User user = User.builder()
                 .name(createUserRequest.getName())
                 .email(createUserRequest.getEmail())
-                .password(createUserRequest.getPassword())
+                .password(passwordEncoder.encode(createUserRequest.getPassword()))
                 .role(createUserRequest.getRole())
                 .build();
         return userRepository.save(user);
@@ -35,11 +39,7 @@ public class UserService {
         return "User with " + id + " deleted";
     }
     public User updateUser(Long id, CreateUserRequest updateUserRequest){
-        Optional<User> existingUser = userRepository.findById(id);
-        if(existingUser.isEmpty()){
-            throw new ResourceNotFoundException("User not found");
-        }
-        User user = existingUser.get();
+        User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found"));
         if(updateUserRequest.getName() != null){
             user.setName(updateUserRequest.getName());
         }
@@ -53,5 +53,13 @@ public class UserService {
             user.setRole(updateUserRequest.getRole());
         }
         return userRepository.save(user);
+    }
+    public String loginUser(LoginRequest loginRequest){
+       User user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(()->new ResourceNotFoundException("Invalid Credentials"));
+        if(passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())){
+            return jwtService.generateToken(user.getEmail());
+        }else{
+            throw new ResourceNotFoundException("Invalid credentials");
+        }
     }
 }

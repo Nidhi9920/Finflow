@@ -1,6 +1,7 @@
 package com.nidhi.finflow.controller;
 
 import com.nidhi.finflow.dto.CreateUserRequest;
+import com.nidhi.finflow.dto.LoginRequest;
 import com.nidhi.finflow.entity.User;
 import com.nidhi.finflow.service.UserService;
 import jakarta.validation.Valid;
@@ -34,5 +35,9 @@ public class UserController {
     @PutMapping("/{id}")
     public User updateUserById(@PathVariable Long id, @Valid @RequestBody CreateUserRequest updateUserRequest){
         return userService.updateUser(id, updateUserRequest);
+    }
+    @PostMapping("/login")
+    public String loginUser(@Valid @RequestBody LoginRequest loginRequest){
+        return userService.loginUser(loginRequest);
     }
 }
