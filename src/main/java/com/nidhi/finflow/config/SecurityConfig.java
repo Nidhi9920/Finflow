@@ -19,9 +19,12 @@ public class SecurityConfig {
                 .sessionManagement(sesion ->
                         sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(
-                                "/health", "/api/users/login").permitAll()
+                                "/health", "/api/users/login").permitAll() //For public
                         .requestMatchers(
-                                HttpMethod.POST, "/api/users").permitAll()
+                                HttpMethod.POST, "/api/users").permitAll() //For logged-in User
+                        .requestMatchers(
+                                HttpMethod.DELETE, "/api/users/**")//For admin only
+                        .hasRole("ADMIN")
                         .anyRequest().authenticated()
                 ).addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

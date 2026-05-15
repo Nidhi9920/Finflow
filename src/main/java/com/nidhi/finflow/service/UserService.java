@@ -36,7 +36,7 @@ public class UserService {
     public String deleteUser(Long id){
         User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found"));
         userRepository.delete(user);
-        return "User with " + id + " deleted";
+        return "User with id=" + id + " deleted";
     }
     public User updateUser(Long id, CreateUserRequest updateUserRequest){
         User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found"));
@@ -57,7 +57,7 @@ public class UserService {
     public String loginUser(LoginRequest loginRequest){
        User user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(()->new ResourceNotFoundException("Invalid Credentials"));
         if(passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())){
-            return jwtService.generateToken(user.getEmail());
+            return jwtService.generateToken(user.getEmail(), user.getRole().name());
         }else{
             throw new ResourceNotFoundException("Invalid credentials");
         }
