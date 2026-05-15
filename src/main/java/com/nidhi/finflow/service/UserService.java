@@ -2,15 +2,17 @@ package com.nidhi.finflow.service;
 
 import com.nidhi.finflow.dto.CreateUserRequest;
 import com.nidhi.finflow.dto.LoginRequest;
+import com.nidhi.finflow.dto.UpdateUserRequest;
 import com.nidhi.finflow.entity.User;
 import com.nidhi.finflow.exception.ResourceNotFoundException;
 import com.nidhi.finflow.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +40,8 @@ public class UserService {
         userRepository.delete(user);
         return "User with id=" + id + " deleted";
     }
-    public User updateUser(Long id, CreateUserRequest updateUserRequest){
-        User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found"));
+    public User updateCurrentUser(UpdateUserRequest updateUserRequest){
+        User user = getCurrentUser();
         if(updateUserRequest.getName() != null){
             user.setName(updateUserRequest.getName());
         }
@@ -47,10 +49,7 @@ public class UserService {
             user.setEmail(updateUserRequest.getEmail());
         }
         if(updateUserRequest.getPassword() != null){
-            user.setPassword(updateUserRequest.getPassword());
-        }
-        if(updateUserRequest.getRole() != null){
-            user.setRole(updateUserRequest.getRole());
+            user.setPassword(passwordEncoder.encode(updateUserRequest.getPassword()));
         }
         return userRepository.save(user);
     }
@@ -61,5 +60,9 @@ public class UserService {
         }else{
             throw new ResourceNotFoundException("Invalid credentials");
         }
+    }
+    public User getCurrentUser(){
+        String email = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        return userRepository.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("User not found"));
     }
 }
