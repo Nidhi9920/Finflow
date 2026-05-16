@@ -1,9 +1,11 @@
 package com.nidhi.finflow.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -30,6 +32,9 @@ public class User {
     private Role role; //USER ADMIN
 
     private LocalDateTime createdAt;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Expense> expenses;
     //automatically adds creation time
     @PrePersist
     public  void prePersist(){

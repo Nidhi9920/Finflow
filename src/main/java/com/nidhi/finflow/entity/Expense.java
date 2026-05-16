@@ -29,9 +29,4 @@ public class Expense {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-//    @PrePersist
-//    public void setDate(){
-//        this.date = LocalDate.now();
-//    }
 }
