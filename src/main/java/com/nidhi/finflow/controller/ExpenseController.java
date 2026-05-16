@@ -8,7 +8,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/expenses")
@@ -31,5 +33,10 @@ public class ExpenseController {
     public String deleteExpense(@PathVariable Long id){
         expenseService.deleteExpense(id);
         return "Expense deleted successfully";
+    }
+    @GetMapping("/analytics/total")
+    public Map<String, BigDecimal> getTotalSpending(){
+        BigDecimal total = expenseService.getTotalSpending();
+        return Map.of("totalSpending", total);
     }
 }

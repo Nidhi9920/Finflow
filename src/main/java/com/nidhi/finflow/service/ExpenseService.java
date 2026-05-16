@@ -9,6 +9,7 @@ import com.nidhi.finflow.repository.ExpenseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -19,9 +20,6 @@ public class ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final UserService userService;
     public Expense createExpense(CreateExpenseRequest createExpenseRequest){
-        System.out.println("TITLE: "+createExpenseRequest.getTitle());
-        System.out.println("AMOUNT: "+createExpenseRequest.getAmount());
-        System.out.println("CATEGORY: "+createExpenseRequest.getCategory());
         Expense expense = Expense.builder()
                 .title(createExpenseRequest.getTitle())
                 .amount(createExpenseRequest.getAmount())
@@ -72,5 +70,9 @@ public class ExpenseService {
             throw new ResourceNotFoundException("Access denied");
         }
         expenseRepository.delete(expense);
+    }
+    public BigDecimal getTotalSpending(){
+        User user = userService.getCurrentUser();
+        return expenseRepository.getTotalSpendingByUserId(user.getId());
     }
 }
