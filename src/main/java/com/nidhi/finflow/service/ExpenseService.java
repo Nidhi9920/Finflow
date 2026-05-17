@@ -3,6 +3,7 @@ package com.nidhi.finflow.service;
 import com.nidhi.finflow.dto.CreateExpenseRequest;
 import com.nidhi.finflow.dto.UpdateExpenseRequest;
 import com.nidhi.finflow.entity.Expense;
+import com.nidhi.finflow.entity.ExpenseCategory;
 import com.nidhi.finflow.entity.User;
 import com.nidhi.finflow.exception.ResourceNotFoundException;
 import com.nidhi.finflow.repository.ExpenseRepository;
@@ -11,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.time.Month;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -74,5 +75,32 @@ public class ExpenseService {
     public BigDecimal getTotalSpending(){
         User user = userService.getCurrentUser();
         return expenseRepository.getTotalSpendingByUserId(user.getId());
+    }
+    public Map<String, BigDecimal> getCategoryWiseSpending(){
+        User user = userService.getCurrentUser();
+        List<Object[]> results = expenseRepository.getCategoryWiseSpending(user.getId());
+        Map<String, BigDecimal> spending = new HashMap<>();
+        for(Object[] row : results){
+            String category = row[0].toString();
+            BigDecimal total = (BigDecimal) row[1];
+            spending.put(category,total);
+        }
+        return spending;
+    }
+    public Map<String, BigDecimal> getMonthlySpending(){
+        User user = userService.getCurrentUser();
+        List<Object[]> results = expenseRepository.getMonthlySpending(user.getId());
+        Map<String, BigDecimal> monthlySpending = new LinkedHashMap<>();
+        for(Object[] row : results){
+            Integer monthNumber = (Integer) row[0];
+            BigDecimal total = (BigDecimal) row[1];
+            String monthName = Month.of(monthNumber).name();
+            monthlySpending.put(monthName, total);
+        }
+        return monthlySpending;
+    }
+    public List<Expense> getExpenseFilter(ExpenseCategory category, LocalDate startDate, LocalDate endDate){
+        User user = userService.getCurrentUser();
+        return expenseRepository.filterExpense(user.getId(), category, startDate, endDate);
     }
 }
