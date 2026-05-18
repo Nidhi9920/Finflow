@@ -53,6 +53,6 @@ public class ExpenseController {
     public List<Expense> getExpenseFilter(@RequestParam(required = false)ExpenseCategory category,
                                           @RequestParam(required = false)LocalDate startDate,
                                           @RequestParam(required = false) LocalDate endDate){
-        return expenseService.getExpenseFilter(category, startDate, endDate);
+        return expenseService.filterExpense(category, startDate, endDate);
     }
 }

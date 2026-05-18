@@ -4,6 +4,8 @@ import com.nidhi.finflow.dto.CreateUserRequest;
 import com.nidhi.finflow.dto.LoginRequest;
 import com.nidhi.finflow.dto.UpdateUserRequest;
 import com.nidhi.finflow.entity.User;
+import com.nidhi.finflow.exception.EmailAlreadyExistsException;
+import com.nidhi.finflow.exception.InvalidCredentialsException;
 import com.nidhi.finflow.exception.ResourceNotFoundException;
 import com.nidhi.finflow.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,9 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     public User createUser(CreateUserRequest createUserRequest){
+        if(userRepository.existsByEmail(createUserRequest.getEmail())){
+            throw new EmailAlreadyExistsException("Email already exists");
+        }
         User user = User.builder()
                 .name(createUserRequest.getName())
                 .email(createUserRequest.getEmail())
@@ -46,8 +51,14 @@ public class UserService {
             user.setName(updateUserRequest.getName());
         }
         if(updateUserRequest.getEmail() != null){
-            user.setEmail(updateUserRequest.getEmail());
+            boolean emailExists = userRepository.existsByEmail(updateUserRequest.getEmail());
+            boolean sameEmail = user.getEmail().matches(updateUserRequest.getEmail());
+            //Email already exist and is it NOT the current user's own email
+            if(emailExists && !sameEmail){
+                throw new EmailAlreadyExistsException("Email already exists");
+            }
         }
+        user.setEmail(updateUserRequest.getEmail());
         if(updateUserRequest.getPassword() != null){
             user.setPassword(passwordEncoder.encode(updateUserRequest.getPassword()));
         }
@@ -58,11 +69,11 @@ public class UserService {
         if(passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())){
             return jwtService.generateToken(user.getEmail(), user.getRole().name());
         }else{
-            throw new ResourceNotFoundException("Invalid credentials");
+            throw new InvalidCredentialsException("Invalid credentials");
         }
     }
     public User getCurrentUser(){
-        String email = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("User not found"));
     }
 }

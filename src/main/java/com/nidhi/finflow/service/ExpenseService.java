@@ -4,7 +4,9 @@ import com.nidhi.finflow.dto.CreateExpenseRequest;
 import com.nidhi.finflow.dto.UpdateExpenseRequest;
 import com.nidhi.finflow.entity.Expense;
 import com.nidhi.finflow.entity.ExpenseCategory;
+import com.nidhi.finflow.entity.Role;
 import com.nidhi.finflow.entity.User;
+import com.nidhi.finflow.exception.AccessDeniedException;
 import com.nidhi.finflow.exception.ResourceNotFoundException;
 import com.nidhi.finflow.repository.ExpenseRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,13 +30,13 @@ public class ExpenseService {
                 .description(createExpenseRequest.getDescription())
                 .date(Optional.ofNullable(createExpenseRequest.getDate()).orElse(LocalDate.now()))
                 .build();
-        User user = userService.getCurrentUser();
-        expense.setUser(user);
+        User currentUser = userService.getCurrentUser();
+        expense.setUser(currentUser);
         return expenseRepository.save(expense);
     }
     public List<Expense> getMyExpenses(){
-        User user = userService.getCurrentUser();
-        return expenseRepository.findByUserId(user.getId());
+        User currentUser = userService.getCurrentUser();
+        return expenseRepository.findByUserId(currentUser.getId());
     }
     public List<Expense> getAllExpenses(){
         return expenseRepository.findAll();
@@ -43,7 +45,7 @@ public class ExpenseService {
         Expense expense = expenseRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Expense not found"));
         User currentUser = userService.getCurrentUser();
         if(!expense.getUser().getId().equals(currentUser.getId())){
-            throw new ResourceNotFoundException("Access denied");
+            throw new AccessDeniedException("Access denied");
         }
         if(request.getTitle() != null){
             expense.setTitle(request.getTitle());
@@ -66,19 +68,19 @@ public class ExpenseService {
         Expense expense = expenseRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Expense not found"));
         User currentUser = userService.getCurrentUser();
         boolean isOwner = expense.getUser().getId().equals(currentUser.getId());
-        boolean isAdmin = currentUser.getRole().name().equals("ADMIN");
+        boolean isAdmin = currentUser.getRole()== Role.ADMIN;
         if(!isOwner && !isAdmin){
-            throw new ResourceNotFoundException("Access denied");
+            throw new AccessDeniedException("Access denied");
         }
         expenseRepository.delete(expense);
     }
     public BigDecimal getTotalSpending(){
-        User user = userService.getCurrentUser();
-        return expenseRepository.getTotalSpendingByUserId(user.getId());
+        User currentUser = userService.getCurrentUser();
+        return expenseRepository.getTotalSpendingByUserId(currentUser.getId());
     }
     public Map<String, BigDecimal> getCategoryWiseSpending(){
-        User user = userService.getCurrentUser();
-        List<Object[]> results = expenseRepository.getCategoryWiseSpending(user.getId());
+        User currentUser = userService.getCurrentUser();
+        List<Object[]> results = expenseRepository.getCategoryWiseSpending(currentUser.getId());
         Map<String, BigDecimal> spending = new HashMap<>();
         for(Object[] row : results){
             String category = row[0].toString();
@@ -88,8 +90,8 @@ public class ExpenseService {
         return spending;
     }
     public Map<String, BigDecimal> getMonthlySpending(){
-        User user = userService.getCurrentUser();
-        List<Object[]> results = expenseRepository.getMonthlySpending(user.getId());
+        User currentUser = userService.getCurrentUser();
+        List<Object[]> results = expenseRepository.getMonthlySpending(currentUser.getId());
         Map<String, BigDecimal> monthlySpending = new LinkedHashMap<>();
         for(Object[] row : results){
             Integer monthNumber = (Integer) row[0];
@@ -99,8 +101,8 @@ public class ExpenseService {
         }
         return monthlySpending;
     }
-    public List<Expense> getExpenseFilter(ExpenseCategory category, LocalDate startDate, LocalDate endDate){
-        User user = userService.getCurrentUser();
-        return expenseRepository.filterExpense(user.getId(), category, startDate, endDate);
+    public List<Expense> filterExpense(ExpenseCategory category, LocalDate startDate, LocalDate endDate){
+        User currentUser = userService.getCurrentUser();
+        return expenseRepository.filterExpense(currentUser.getId(), category, startDate, endDate);
     }
 }
