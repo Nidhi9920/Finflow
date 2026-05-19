@@ -3,7 +3,9 @@ package com.nidhi.finflow.service;
 import com.nidhi.finflow.dto.CreateUserRequest;
 import com.nidhi.finflow.dto.LoginRequest;
 import com.nidhi.finflow.dto.UpdateUserRequest;
+import com.nidhi.finflow.entity.Role;
 import com.nidhi.finflow.entity.User;
+import com.nidhi.finflow.exception.AccessDeniedException;
 import com.nidhi.finflow.exception.EmailAlreadyExistsException;
 import com.nidhi.finflow.exception.InvalidCredentialsException;
 import com.nidhi.finflow.exception.ResourceNotFoundException;
@@ -35,10 +37,10 @@ public class UserService {
         return userRepository.save(user);
     }
     public List<User> getAllUsers(){
+        if(!getCurrentUser().getRole().name().equals(Role.ADMIN.name())){
+            throw new AccessDeniedException("Access Denied");
+        }
         return userRepository.findAll();
-    }
-    public User getUserById(Long id){
-        return userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found"));
     }
     public String deleteUser(Long id){
         User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found"));

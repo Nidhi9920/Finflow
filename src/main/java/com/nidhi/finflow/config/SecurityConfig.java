@@ -18,15 +18,36 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(sesion ->
                         sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers(
-                                "/health", "/api/users/login").permitAll() //For public
+                .authorizeHttpRequests(auth -> auth
+                        //Public APIs
                         .requestMatchers(
-                                HttpMethod.POST, "/api/users").permitAll() //For logged-in User
+                                "/health",
+                                "/api/users/login"
+                        ).permitAll()
                         .requestMatchers(
-                                HttpMethod.DELETE, "/api/users/**")//For admin only
-                        .hasRole("ADMIN")
-                        .anyRequest().authenticated()
-                ).addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                                HttpMethod.POST,
+                                "/api/users/register"
+                        ).permitAll()
+                        //Swagger
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
+                        //Admin APIs
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/users"
+                        ).hasRole("ADMIN")
+                        .requestMatchers(
+                                HttpMethod.DELETE,
+                                "/api/users/**"
+                        ).hasRole("ADMIN")
+                        //Secure APIs
+                        .anyRequest()
+                        .authenticated()
+                )
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
