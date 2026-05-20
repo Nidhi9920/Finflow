@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -29,8 +30,11 @@ public class ExpenseController {
     }
     @Operation(summary = "Get my expenses", description = "Retrieve all expenses of currently authenticated user")
     @GetMapping("/my")
-    public List<ExpenseResponse> getMyExpense(){
-        return expenseService.getMyExpenses();
+    public Page<ExpenseResponse> getMyExpense(@RequestParam(defaultValue = "0") int page,
+                                              @RequestParam(defaultValue = "5") int size,
+                                              @RequestParam(defaultValue = "date") String sortBy,
+                                              @RequestParam(defaultValue = "desc") String direction){
+        return expenseService.getMyExpenses(page, size, sortBy, direction);
     }
     @Operation(summary = "Update expense", description = "Update an expense by ID. Only owner can update")
     @PutMapping("/{id}")

@@ -2,6 +2,8 @@ package com.nidhi.finflow.repository;
 
 import com.nidhi.finflow.entity.Expense;
 import com.nidhi.finflow.entity.ExpenseCategory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,7 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
-    List<Expense> findByUserId(Long userId);
+    Page<Expense> findByUserId(Long userId, Pageable pageable);
     @Query("""
             SELECT COALESCE(SUM(e.amount), 0)
             FROM Expense e

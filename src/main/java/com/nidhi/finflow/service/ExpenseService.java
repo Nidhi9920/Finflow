@@ -11,6 +11,10 @@ import com.nidhi.finflow.exception.AccessDeniedException;
 import com.nidhi.finflow.exception.ResourceNotFoundException;
 import com.nidhi.finflow.repository.ExpenseRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -35,9 +39,11 @@ public class ExpenseService {
         expense.setUser(currentUser);
         return mapToExpenseResponse(expenseRepository.save(expense));
     }
-    public List<ExpenseResponse> getMyExpenses(){
+    public Page<ExpenseResponse> getMyExpenses(int page, int size, String sortBy, String direction){
         User currentUser = userService.getCurrentUser();
-        return expenseRepository.findByUserId(currentUser.getId()).stream().map(this::mapToExpenseResponse).toList();
+        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return expenseRepository.findByUserId(currentUser.getId(), pageable).map(this::mapToExpenseResponse);
     }
     public List<ExpenseResponse> getAllExpenses(){
         return expenseRepository.findAll().stream().map(this::mapToExpenseResponse).toList();
