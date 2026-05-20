@@ -1,8 +1,8 @@
 package com.nidhi.finflow.controller;
 
 import com.nidhi.finflow.dto.CreateExpenseRequest;
+import com.nidhi.finflow.dto.ExpenseResponse;
 import com.nidhi.finflow.dto.UpdateExpenseRequest;
-import com.nidhi.finflow.entity.Expense;
 import com.nidhi.finflow.entity.ExpenseCategory;
 import com.nidhi.finflow.service.ExpenseService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,17 +24,17 @@ public class ExpenseController {
     private final ExpenseService expenseService;
     @Operation(summary = "Create expense", description = "Create a new expense for the logged-in user")
     @PostMapping
-    public Expense createExpense(@Valid @RequestBody CreateExpenseRequest createExpenseRequest){
+    public ExpenseResponse createExpense(@Valid @RequestBody CreateExpenseRequest createExpenseRequest){
         return expenseService.createExpense(createExpenseRequest);
     }
     @Operation(summary = "Get my expenses", description = "Retrieve all expenses of currently authenticated user")
     @GetMapping("/my")
-    public List<Expense> getMyExpense(){
+    public List<ExpenseResponse> getMyExpense(){
         return expenseService.getMyExpenses();
     }
     @Operation(summary = "Update expense", description = "Update an expense by ID. Only owner can update")
     @PutMapping("/{id}")
-    public Expense updateExpense(@PathVariable Long id, @RequestBody UpdateExpenseRequest updateExpenseRequest){
+    public ExpenseResponse updateExpense(@PathVariable Long id, @RequestBody UpdateExpenseRequest updateExpenseRequest){
         return expenseService.updateExpense(id,updateExpenseRequest);
     }
     @Operation(summary = "Delete expense", description = "Delete an expense by ID. Only owner can delete")
@@ -61,7 +61,7 @@ public class ExpenseController {
     }
     @Operation(summary = "Filter expense", description = "Filter expenses by category and date range")
     @GetMapping("/filter")
-    public List<Expense> getExpenseFilter(@RequestParam(required = false)ExpenseCategory category,
+    public List<ExpenseResponse> getExpenseFilter(@RequestParam(required = false)ExpenseCategory category,
                                           @RequestParam(required = false)LocalDate startDate,
                                           @RequestParam(required = false) LocalDate endDate){
         return expenseService.filterExpense(category, startDate, endDate);

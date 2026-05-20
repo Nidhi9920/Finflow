@@ -3,6 +3,7 @@ package com.nidhi.finflow.service;
 import com.nidhi.finflow.dto.CreateUserRequest;
 import com.nidhi.finflow.dto.LoginRequest;
 import com.nidhi.finflow.dto.UpdateUserRequest;
+import com.nidhi.finflow.dto.UserResponse;
 import com.nidhi.finflow.entity.Role;
 import com.nidhi.finflow.entity.User;
 import com.nidhi.finflow.exception.AccessDeniedException;
@@ -24,7 +25,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    public User createUser(CreateUserRequest createUserRequest){
+    public UserResponse createUser(CreateUserRequest createUserRequest){
         if(userRepository.existsByEmail(createUserRequest.getEmail())){
             throw new EmailAlreadyExistsException("Email already exists");
         }
@@ -34,20 +35,17 @@ public class UserService {
                 .password(passwordEncoder.encode(createUserRequest.getPassword()))
                 .role(createUserRequest.getRole())
                 .build();
-        return userRepository.save(user);
+        return mapToUserResponse(userRepository.save(user));
     }
-    public List<User> getAllUsers(){
-        if(!getCurrentUser().getRole().name().equals(Role.ADMIN.name())){
-            throw new AccessDeniedException("Access Denied");
-        }
-        return userRepository.findAll();
+    public List<UserResponse> getAllUsers(){
+        return userRepository.findAll().stream().map(this::mapToUserResponse).toList();
     }
     public String deleteUser(Long id){
         User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found"));
         userRepository.delete(user);
         return "User with id=" + id + " deleted";
     }
-    public User updateCurrentUser(UpdateUserRequest updateUserRequest){
+    public UserResponse updateCurrentUser(UpdateUserRequest updateUserRequest){
         User user = getCurrentUser();
         if(updateUserRequest.getName() != null){
             user.setName(updateUserRequest.getName());
@@ -59,12 +57,12 @@ public class UserService {
             if(emailExists && !sameEmail){
                 throw new EmailAlreadyExistsException("Email already exists");
             }
+            user.setEmail(updateUserRequest.getEmail());
         }
-        user.setEmail(updateUserRequest.getEmail());
         if(updateUserRequest.getPassword() != null){
             user.setPassword(passwordEncoder.encode(updateUserRequest.getPassword()));
         }
-        return userRepository.save(user);
+        return mapToUserResponse(userRepository.save(user));
     }
     public String loginUser(LoginRequest loginRequest){
        User user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(()->new ResourceNotFoundException("Invalid Credentials"));
@@ -77,5 +75,16 @@ public class UserService {
     public User getCurrentUser(){
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("User not found"));
+    }
+    public UserResponse getCurrentUserResponse(){
+        return mapToUserResponse(getCurrentUser());
+    }
+    private UserResponse mapToUserResponse(User user) {
+        return UserResponse.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .build();
     }
 }

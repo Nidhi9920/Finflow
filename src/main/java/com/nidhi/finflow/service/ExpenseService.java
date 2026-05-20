@@ -1,6 +1,7 @@
 package com.nidhi.finflow.service;
 
 import com.nidhi.finflow.dto.CreateExpenseRequest;
+import com.nidhi.finflow.dto.ExpenseResponse;
 import com.nidhi.finflow.dto.UpdateExpenseRequest;
 import com.nidhi.finflow.entity.Expense;
 import com.nidhi.finflow.entity.ExpenseCategory;
@@ -22,7 +23,7 @@ import java.util.*;
 public class ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final UserService userService;
-    public Expense createExpense(CreateExpenseRequest createExpenseRequest){
+    public ExpenseResponse createExpense(CreateExpenseRequest createExpenseRequest){
         Expense expense = Expense.builder()
                 .title(createExpenseRequest.getTitle())
                 .amount(createExpenseRequest.getAmount())
@@ -32,16 +33,16 @@ public class ExpenseService {
                 .build();
         User currentUser = userService.getCurrentUser();
         expense.setUser(currentUser);
-        return expenseRepository.save(expense);
+        return mapToExpenseResponse(expenseRepository.save(expense));
     }
-    public List<Expense> getMyExpenses(){
+    public List<ExpenseResponse> getMyExpenses(){
         User currentUser = userService.getCurrentUser();
-        return expenseRepository.findByUserId(currentUser.getId());
+        return expenseRepository.findByUserId(currentUser.getId()).stream().map(this::mapToExpenseResponse).toList();
     }
-    public List<Expense> getAllExpenses(){
-        return expenseRepository.findAll();
+    public List<ExpenseResponse> getAllExpenses(){
+        return expenseRepository.findAll().stream().map(this::mapToExpenseResponse).toList();
     }
-    public Expense updateExpense(Long id, UpdateExpenseRequest request){
+    public ExpenseResponse updateExpense(Long id, UpdateExpenseRequest request){
         Expense expense = expenseRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Expense not found"));
         User currentUser = userService.getCurrentUser();
         if(!expense.getUser().getId().equals(currentUser.getId())){
@@ -62,7 +63,7 @@ public class ExpenseService {
         if(request.getDate() != null){
             expense.setDate(request.getDate());
         }
-        return expenseRepository.save(expense);
+        return mapToExpenseResponse(expenseRepository.save(expense));
     }
     public void deleteExpense(Long id){
         Expense expense = expenseRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Expense not found"));
@@ -101,8 +102,19 @@ public class ExpenseService {
         }
         return monthlySpending;
     }
-    public List<Expense> filterExpense(ExpenseCategory category, LocalDate startDate, LocalDate endDate){
+    public List<ExpenseResponse> filterExpense(ExpenseCategory category, LocalDate startDate, LocalDate endDate){
         User currentUser = userService.getCurrentUser();
-        return expenseRepository.filterExpense(currentUser.getId(), category, startDate, endDate);
+        return expenseRepository.filterExpense(currentUser.getId(), category, startDate, endDate)
+                .stream().map(this::mapToExpenseResponse).toList();
+    }
+    private ExpenseResponse mapToExpenseResponse(Expense expense){
+        return ExpenseResponse.builder()
+                .id(expense.getId())
+                .title(expense.getTitle())
+                .amount(expense.getAmount())
+                .category(expense.getCategory())
+                .description(expense.getDescription())
+                .date(expense.getDate())
+                .build();
     }
 }
