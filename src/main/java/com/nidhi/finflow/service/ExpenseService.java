@@ -108,9 +108,9 @@ public class ExpenseService {
         }
         return monthlySpending;
     }
-    public List<ExpenseResponse> filterExpense(ExpenseCategory category, LocalDate startDate, LocalDate endDate){
+    public List<ExpenseResponse> filterExpenses(ExpenseCategory category, LocalDate startDate, LocalDate endDate, BigDecimal minAmount, BigDecimal maxAmount, String keyword){
         User currentUser = userService.getCurrentUser();
-        return expenseRepository.filterExpense(currentUser.getId(), category, startDate, endDate)
+        return expenseRepository.filterExpenses(currentUser.getId(), category, startDate, endDate, minAmount,maxAmount, keyword)
                 .stream().map(this::mapToExpenseResponse).toList();
     }
     private ExpenseResponse mapToExpenseResponse(Expense expense){

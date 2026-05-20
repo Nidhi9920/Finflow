@@ -65,9 +65,12 @@ public class ExpenseController {
     }
     @Operation(summary = "Filter expense", description = "Filter expenses by category and date range")
     @GetMapping("/filter")
-    public List<ExpenseResponse> getExpenseFilter(@RequestParam(required = false)ExpenseCategory category,
-                                          @RequestParam(required = false)LocalDate startDate,
-                                          @RequestParam(required = false) LocalDate endDate){
-        return expenseService.filterExpense(category, startDate, endDate);
+    public List<ExpenseResponse> getFilterExpenses(@RequestParam(required = false)ExpenseCategory category,
+                                                  @RequestParam(required = false)LocalDate startDate,
+                                                  @RequestParam(required = false) LocalDate endDate,
+                                                  @RequestParam(required = false) BigDecimal minAmount,
+                                                  @RequestParam(required = false) BigDecimal maxAmount,
+                                                  @RequestParam(required = false) String keyword){
+        return expenseService.filterExpenses(category, startDate, endDate, minAmount, maxAmount, keyword);
     }
 }

@@ -42,9 +42,20 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
             AND (:category IS NULL OR e.category = :category)
             AND (:startDate IS NULL OR e.date >= :startDate)
             AND (:endDate IS NULL OR e.date <= :endDate)
+            AND (:minAmount IS NULL OR e.amount >= :minAmount)
+            AND (:maxAmount IS NULL OR e.amount <= :maxAmount)
+            AND (:keyword IS NULL
+            OR LOWER(e.title)
+            LIKE LOWER(CONCAT('%', :keyword, '%'))
+            OR LOWER(e.description)
+            LIKE LOWER(CONCAT('%', :keyword, '%'))
+            )
             """)
-    List<Expense> filterExpense(@Param("userId") Long userId,
-                                @Param("category")ExpenseCategory expenseCategory,
-                                @Param("startDate")LocalDate startDate,
-                                @Param("endDate") LocalDate endDate);
+    List<Expense> filterExpenses(@Param("userId") Long userId,
+                                 @Param("category")ExpenseCategory expenseCategory,
+                                 @Param("startDate")LocalDate startDate,
+                                 @Param("endDate") LocalDate endDate,
+                                 @Param("minAmount") BigDecimal minAmount,
+                                 @Param("maxAmount") BigDecimal maxAmount,
+                                 @Param("keyword") String keyword);
 }
