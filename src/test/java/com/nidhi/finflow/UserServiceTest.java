@@ -7,7 +7,6 @@ import com.nidhi.finflow.entity.Role;
 import com.nidhi.finflow.entity.User;
 import com.nidhi.finflow.exception.EmailAlreadyExistsException;
 import com.nidhi.finflow.exception.InvalidCredentialsException;
-import com.nidhi.finflow.exception.ResourceNotFoundException;
 import com.nidhi.finflow.repository.UserRepository;
 import com.nidhi.finflow.service.JwtService;
 import com.nidhi.finflow.service.UserService;
