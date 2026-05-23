@@ -2,6 +2,11 @@
 
 FinFlow is a secure multi-user financial management backend system built using Spring Boot. It allows users to manage personal expenses with secure JWT authentication, role-based authorization, expense tracking, analytics, filtering, pagination, and sorting.
 
+![Java](https://img.shields.io/badge/Java-17-orange)
+![Spring Boot](https://img.shields.io/badge/SpringBoot-3-green)
+![Security](https://img.shields.io/badge/SpringSecurity-JWT-success)
+![Database](https://img.shields.io/badge/Database-MySQL-blue)
+![Build](https://img.shields.io/badge/Build-Maven-red)
 ---
 
 ## Features
@@ -24,9 +29,9 @@ FinFlow is a secure multi-user financial management backend system built using S
 
 ### Expense Management
 - Create Expense
-- Get Logged-in User Expenses
+- Get Logged-in User's Expenses
 - Update Expense (Owner only)
-- Delete Expense
+- Delete Expense (Owner / ADMIN Access)
     - Owner can delete own expense
     - ADMIN can delete any expense
 
@@ -44,8 +49,8 @@ Filter expenses by:
 
 ### Pagination & Sorting
 Supports:
-- Pagination
-- Sorting by fields
+- Pagination for large datasets
+- Dynamic sorting by fields
 - Ascending / Descending order
 
 ---
@@ -106,6 +111,17 @@ JWT contains:
 - Role
 - Issued time
 - Expiration time
+
+---
+
+## Security Features
+
+- JWT-based stateless authentication
+- Password encryption using BCrypt
+- Role-based access control (USER / ADMIN)
+- Owner-only access for expense modification
+- ADMIN-level authorization for sensitive operations
+- Secure API access using Bearer Token
 
 ---
 
@@ -205,7 +221,7 @@ http://localhost:8080/swagger-ui/index.html
 ### Clone Repository
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/Nidhi9920/Finflow.git
 ```
 
 ### Configure Database
@@ -213,7 +229,7 @@ git clone <your-repository-url>
 Update `application.properties`:
 
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/finflow
+spring.datasource.url=jdbc:mysql://localhost:3306/finflow_db
 spring.datasource.username=root
 spring.datasource.password=yourpassword
 ```
@@ -231,6 +247,26 @@ mvn spring-boot:run
 ```
 
 ---
+## Project Preview
+
+### User APIs
+![User APIs](screenshots/user-apis.png)
+
+### Expense APIs
+![Expense APIs](screenshots/expense-apis.png)
+
+### JWT Authentication
+![JWT Login](screenshots/jwt-login.png)
+
+### Authorized API Access
+![Authorized Request](screenshots/authorized-request.png)
+
+### Expense Analytics
+![Analytics](screenshots/analytics-api.png)
+
+### Dynamic Expense Filtering
+![Filter API](screenshots/filter-api.png)
+
 
 ## Testing
 
@@ -254,3 +290,8 @@ Tested Services:
 - Export Reports (PDF/Excel)
 
 ---
+## Author
+
+**Nidhi**
+
+GitHub: https://github.com/Nidhi9920
