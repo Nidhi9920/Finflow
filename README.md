@@ -268,6 +268,16 @@ mvn spring-boot:run
 ![Filter API](screenshots/filter-api.png)
 
 
+## API Testing
+
+Postman collection available for testing APIs:
+
+`FinFlow.postman_collection.json`
+
+Import the collection into Postman and configure JWT token for authenticated requests.
+
+----
+
 ## Testing
 
 Unit testing implemented using:

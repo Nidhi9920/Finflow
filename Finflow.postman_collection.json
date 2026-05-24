@@ -1,0 +1,512 @@
+{
+  "info": {
+    "_postman_id": "e4ab6a74-62a0-47de-9868-d013cbdcf50d",
+    "name": "Finflow Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "38559074"
+  },
+  "item": [
+    {
+      "name": "health",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "/api/users",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Ramesh\",\n  \"email\": \"ramesh90@gmail.com\",\n  \"password\": \"12345678\",\n  \"role\": \"USER\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/users",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/api/users/{id}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/users",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/api/users",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYW1lc2g5MEBnbWFpbC5jb20iLCJpYXQiOjE3Nzg3NzM1MTIsImV4cCI6MTc3ODc3NzExMn0.aKIM2SWW8Sl6mva0R0wDe6Q80IsQKURCh2DbDtl1jXk",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/users",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "api/users/{id}",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/users/4",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "users",
+            "4"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/api/users/me",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Nidhi\",\n    \"role\":\"USER\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/users/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "users",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/api/users/login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\":\"ramesh90@gmail.com\",\n    \"password\":\"12345678\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/users/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "users",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8080/api/expenses",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb2hpdC5zQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc4OTMxODEwLCJleHAiOjE3Nzg5MzU0MTB9.Sabv3rx4CKylzC9imXHbCnCpRf8ORBrbHd4Z-8doYw4"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"Swiggy\",\n    \"amount\": 450,\n    \"category\": \"FOOD\",\n    \"description\": \"Dinner\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/expenses",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "expenses"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/api/expenses/my",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb2hpdC5zQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc4OTk3Nzg3LCJleHAiOjE3NzkwMDEzODd9.TKe63t7XWdAkk1E40ukXRZ4sDl1qM6mrllGY5-ehUk8"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "disabled": true
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/expenses/my",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "expenses",
+            "my"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8080/api/expenses/2",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb2hpdC5zQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc4OTMyOTcxLCJleHAiOjE3Nzg5MzY1NzF9.LKYhmubXtBF8ydqPP0IE2LPYAelp2AA1AAQxlqvLXWQ"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"amount\": 300\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/expenses/2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "expenses",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8080/api/expenses/2",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb2hpdC5zQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc4OTMyOTcxLCJleHAiOjE3Nzg5MzY1NzF9.LKYhmubXtBF8ydqPP0IE2LPYAelp2AA1AAQxlqvLXWQ"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "disabled": true
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/expenses/2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "expenses",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/api/expenses/analytics/total",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb2hpdC5zQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc4OTk3Nzg3LCJleHAiOjE3NzkwMDEzODd9.TKe63t7XWdAkk1E40ukXRZ4sDl1qM6mrllGY5-ehUk8",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/expenses/analytics/total",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "expenses",
+            "analytics",
+            "total"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/api/expenses/analytics/category",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb2hpdC5zQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc4OTk3Nzg3LCJleHAiOjE3NzkwMDEzODd9.TKe63t7XWdAkk1E40ukXRZ4sDl1qM6mrllGY5-ehUk8",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/expenses/analytics/category",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "expenses",
+            "analytics",
+            "category"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/api/expenses/analytics/monthly",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhdm5pLnNAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzkwMjk0NTksImV4cCI6MTc3OTAzMzA1OX0.VWWDRJ03Y0iD0vNlyEGxZ4mAmw3UTHgr0cu_rstzNMA",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/expenses/analytics/monthly",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "expenses",
+            "analytics",
+            "monthly"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "api/expenses/filter?category=FOOD",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhdm5pLnNAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzkwMjk0NTksImV4cCI6MTc3OTAzMzA1OX0.VWWDRJ03Y0iD0vNlyEGxZ4mAmw3UTHgr0cu_rstzNMA",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/expenses/filter?category=FOOD",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "expenses",
+            "filter"
+          ],
+          "query": [
+            {
+              "key": "category",
+              "value": "FOOD"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/api/expenses/filter?startDate=2026-01-01&endDate=2026-01-31",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhdm5pLnNAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzkwMjk0NTksImV4cCI6MTc3OTAzMzA1OX0.VWWDRJ03Y0iD0vNlyEGxZ4mAmw3UTHgr0cu_rstzNMA"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/expenses/filter?startDate=2026-01-01&endDate=2026-01-31",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "expenses",
+            "filter"
+          ],
+          "query": [
+            {
+              "key": "startDate",
+              "value": "2026-01-01"
+            },
+            {
+              "key": "endDate",
+              "value": "2026-01-31"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "filter?category=FOOD&startDate=2026-01-01&endDate=2026-01-31",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhdm5pLnNAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzkwMjk0NTksImV4cCI6MTc3OTAzMzA1OX0.VWWDRJ03Y0iD0vNlyEGxZ4mAmw3UTHgr0cu_rstzNMA"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/expenses/filter?category=FOOD&startDate=2026-01-01&endDate=2026-01-31",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "expenses",
+            "filter"
+          ],
+          "query": [
+            {
+              "key": "category",
+              "value": "FOOD"
+            },
+            {
+              "key": "startDate",
+              "value": "2026-01-01"
+            },
+            {
+              "key": "endDate",
+              "value": "2026-01-31"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
