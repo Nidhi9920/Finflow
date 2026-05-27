@@ -63,7 +63,7 @@ public class ExpenseController {
     public Map<String, BigDecimal> getMonthlySpending(){
         return expenseService.getMonthlySpending();
     }
-    @Operation(summary = "Filter expense", description = "Filter expenses by category and date range")
+    @Operation(summary = "Expense Filtering", description = "Filter expenses by category, date range, amount range, and keyword search in the title or description")
     @GetMapping("/filter")
     public List<ExpenseResponse> getFilterExpenses(@RequestParam(required = false)ExpenseCategory category,
                                                   @RequestParam(required = false)LocalDate startDate,
