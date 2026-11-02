@@ -378,7 +378,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhdm5pLnNAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzkwMjk0NTksImV4cCI6MTc3OTAzMzA1OX0.VWWDRJ03Y0iD0vNlyEGxZ4mAmw3UTHgr0cu_rstzNMA",
+            "value": "Bearer YOUR_TOKEN",
             "type": "text"
           }
         ],
@@ -406,7 +406,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhdm5pLnNAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzkwMjk0NTksImV4cCI6MTc3OTAzMzA1OX0.VWWDRJ03Y0iD0vNlyEGxZ4mAmw3UTHgr0cu_rstzNMA",
+            "value": "Bearer YOUR_TOKEN",
             "type": "text"
           }
         ],
@@ -439,7 +439,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhdm5pLnNAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzkwMjk0NTksImV4cCI6MTc3OTAzMzA1OX0.VWWDRJ03Y0iD0vNlyEGxZ4mAmw3UTHgr0cu_rstzNMA"
+            "value": "Bearer YOUR_TOKEN"
           }
         ],
         "url": {
@@ -475,7 +475,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhdm5pLnNAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzkwMjk0NTksImV4cCI6MTc3OTAzMzA1OX0.VWWDRJ03Y0iD0vNlyEGxZ4mAmw3UTHgr0cu_rstzNMA"
+            "value": "Bearer YOUR_TOKEN"
           }
         ],
         "url": {
