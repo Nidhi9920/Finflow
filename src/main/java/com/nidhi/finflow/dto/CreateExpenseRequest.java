@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class CreateExpenseRequest {
+public class  CreateExpenseRequest {
     @NotBlank(message = "Title is required")
     private String title;
     @NotNull(message = "Amount is required")

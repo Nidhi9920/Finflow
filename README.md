@@ -229,9 +229,18 @@ git clone https://github.com/Nidhi9920/Finflow.git
 Update `application.properties`:
 
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/finflow_db
-spring.datasource.username=root
-spring.datasource.password=yourpassword
+export DB_URL="jdbc:mysql://localhost:3306/finflow_db"
+export DB_USERNAME="your_database_username"
+export DB_PASSWORD="your_database_password"
+
+Configure your application.properties using environment variables:
+
+spring.datasource.url=${DB_URL:jdbc:mysql://localhost:3306/finflow_db}
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=false
 ```
 
 ### Build Project
@@ -255,17 +264,6 @@ mvn spring-boot:run
 ### Expense APIs
 ![Expense APIs](screenshots/expense-apis.png)
 
-### JWT Authentication
-![JWT Login](screenshots/jwt-login.png)
-
-### Authorized API Access
-![Authorized Request](screenshots/authorized-request.png)
-
-### Expense Analytics
-![Analytics](screenshots/analytics-api.png)
-
-### Dynamic Expense Filtering
-![Filter API](screenshots/filter-api.png)
 
 
 ## API Testing
